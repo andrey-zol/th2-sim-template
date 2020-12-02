@@ -23,19 +23,20 @@ import com.exactpro.th2.common.value.getMessage
 import com.exactpro.th2.common.value.getString
 import com.exactpro.th2.sim.rule.impl.MessageCompareRule
 
-import java.util.concurrent.atomic.AtomicInteger
+//import java.util.concurrent.atomic.AtomicInteger
+import kotlin.random.Random
 
 class KotlinFIXRuleSecurity(field: Map<String, Value>) : MessageCompareRule() {
-
-    companion object{
-    private var orderId = AtomicInteger(0)
-    private var execId = AtomicInteger(0)
-    }
 
     init {
         init("SecurityStatusRequest", field)
     }
     override fun handleTriggered(incomeMessage: Message): MutableList<Message> {
+        val instrPrice1 = Random.nextInt(50, 100)
+        val instrPrice2 = Random.nextInt(50, 100)
+        val instrPrice3 = Random.nextInt(50, 100)
+        val instrPrice4 = Random.nextInt(50, 100)
+        val instrPrice5 = Random.nextInt(50, 100)
         val result = ArrayList<Message>()
         if (!incomeMessage.containsFields("SecurityID")){
             val reject = message("Reject").addFields(
@@ -48,37 +49,148 @@ class KotlinFIXRuleSecurity(field: Map<String, Value>) : MessageCompareRule() {
             result.add(reject.build())
         }
         else {
-            if (incomeMessage.getString("SecurityID") == "INSTR6") {
-                val unknownInstr = message("SecurityStatus").addFields(
-                        "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
-                        "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
-                        "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
-                        "UnsolicitedIndicator", "N",
-                        "SecurityTradingStatus", "20",
-                        "Text", "Unknown or Invalid instrument"
-                )
-                result.add(unknownInstr.build())
-            } else {
-                val SecurityStatus1 = message("SecurityStatus").addFields(
-                        "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
-                        "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
-                        "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
-                        "Currency", "RUB",
-                        "MarketID", "Demo Market",
-                        "MarketSegmentID", "NEW",
-                        "TradingSessionID", "1",
-                        "TradingSessionSubID", "3",
-                        "UnsolicitedIndicator", "N",
-                        "SecurityTradingStatus", "17",
-                        "BuyVolume", "0",
-                        "SellVolume", "0",
-                        "HighPx", "56",
-                        "LowPx", "54",
-                        "LastPx", "54",
-                        "FirstPx", "54",
-                        "Text", "The simulated SecurityStatus has been sent"
-                )
-                result.add(SecurityStatus1.build())
+            when (incomeMessage.getString("SecurityID")) {
+                "INSTR1" -> {
+                    val highPx = instrPrice1 + Random.nextInt(0, 10)
+                    val lowPx = instrPrice1 - Random.nextInt(0, 10)
+                    val lastPx = Random.nextInt(highPx, lowPx)
+                    val firstPx = Random.nextInt(highPx, lowPx)
+                    val SecurityStatus1 = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "Currency", "RUB",
+                            "MarketID", "Demo Market",
+                            "MarketSegmentID", "NEW",
+                            "TradingSessionID", "1",
+                            "TradingSessionSubID", "3",
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "17",
+                            "BuyVolume", "0",
+                            "SellVolume", "0",
+                            "HighPx", highPx,
+                            "LowPx", lowPx,
+                            "LastPx", lastPx,
+                            "FirstPx", firstPx,
+                            "Text", "The simulated SecurityStatus has been sent"
+                    )
+                    result.add(SecurityStatus1.build())
+                }
+                "INSTR2" -> {
+                    val highPx = instrPrice2 + Random.nextInt(0, 10)
+                    val lowPx = instrPrice2 - Random.nextInt(0, 10)
+                    val lastPx = Random.nextInt(highPx, lowPx)
+                    val firstPx = Random.nextInt(highPx, lowPx)
+                    val SecurityStatus1 = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "Currency", "USD",
+                            "MarketID", "Demo Market",
+                            "MarketSegmentID", "NEW",
+                            "TradingSessionID", "1",
+                            "TradingSessionSubID", "3",
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "17",
+                            "BuyVolume", "0",
+                            "SellVolume", "0",
+                            "HighPx", highPx,
+                            "LowPx", lowPx,
+                            "LastPx", lastPx,
+                            "FirstPx", firstPx,
+                            "Text", "The simulated SecurityStatus has been sent"
+                    )
+                    result.add(SecurityStatus1.build())
+                }
+                "INSTR3" -> {
+                    val highPx = instrPrice3 + Random.nextInt(0, 10)
+                    val lowPx = instrPrice3 - Random.nextInt(0, 10)
+                    val lastPx = Random.nextInt(highPx, lowPx)
+                    val firstPx = Random.nextInt(highPx, lowPx)
+                    val SecurityStatus1 = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "Currency", "EUR",
+                            "MarketID", "Demo Market",
+                            "MarketSegmentID", "NEW",
+                            "TradingSessionID", "1",
+                            "TradingSessionSubID", "3",
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "17",
+                            "BuyVolume", "0",
+                            "SellVolume", "0",
+                            "HighPx", highPx,
+                            "LowPx", lowPx,
+                            "LastPx", lastPx,
+                            "FirstPx", firstPx,
+                            "Text", "The simulated SecurityStatus has been sent"
+                    )
+                    result.add(SecurityStatus1.build())
+                }
+                "INSTR4" -> {
+                    val highPx = instrPrice4 + Random.nextInt(0, 10)
+                    val lowPx = instrPrice4 - Random.nextInt(0, 10)
+                    val lastPx = Random.nextInt(highPx, lowPx)
+                    val firstPx = Random.nextInt(highPx, lowPx)
+                    val SecurityStatus1 = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "Currency", "GBP",
+                            "MarketID", "Demo Market",
+                            "MarketSegmentID", "NEW",
+                            "TradingSessionID", "1",
+                            "TradingSessionSubID", "3",
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "17",
+                            "BuyVolume", "0",
+                            "SellVolume", "0",
+                            "HighPx", highPx,
+                            "LowPx", lowPx,
+                            "LastPx", lastPx,
+                            "FirstPx", firstPx,
+                            "Text", "The simulated SecurityStatus has been sent"
+                    )
+                    result.add(SecurityStatus1.build())
+                }
+                "INSTR5" -> {
+                    val highPx = instrPrice5 + Random.nextInt(0, 10)
+                    val lowPx = instrPrice5 - Random.nextInt(0, 10)
+                    val lastPx = Random.nextInt(highPx, lowPx)
+                    val firstPx = Random.nextInt(highPx, lowPx)
+                    val SecurityStatus1 = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "Currency", "JPY",
+                            "MarketID", "Demo Market",
+                            "MarketSegmentID", "NEW",
+                            "TradingSessionID", "1",
+                            "TradingSessionSubID", "3",
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "17",
+                            "BuyVolume", "0",
+                            "SellVolume", "0",
+                            "HighPx", highPx,
+                            "LowPx", lowPx,
+                            "LastPx", lastPx,
+                            "FirstPx", firstPx,
+                            "Text", "The simulated SecurityStatus has been sent"
+                    )
+                    result.add(SecurityStatus1.build())
+            }
+                else -> {
+                    val unknownInstr = message("SecurityStatus").addFields(
+                            "SecurityID", incomeMessage.getField("SecurityID")!!.getString(),
+                            "SecurityIDSource", incomeMessage.getField("SecurityIDSource")!!.getString(),
+                            "SecurityStatusReqID", incomeMessage.getField("SecurityStatusReqID")!!.getString(),
+                            "UnsolicitedIndicator", "N",
+                            "SecurityTradingStatus", "20",
+                            "Text", "Unknown or Invalid instrument"
+                    )
+                    result.add(unknownInstr.build())
+                }
             }
         }
         return result
